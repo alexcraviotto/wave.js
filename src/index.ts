@@ -63,29 +63,21 @@ export class Wave {
         if (audioElement instanceof HTMLAudioElement) {
             this._audioElement = audioElement;
 
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            if (isSafari) {
-                const events = ['touchstart', 'touchmove', 'touchend', 'mouseup', 'click'];
-                events.forEach((event) => {
-                    document.body.addEventListener(
-                        event,
-                        () => this.connectAnalyser(),
-                        { once: true }
-                    );
-                });
-            } else {
-                this._audioElement.addEventListener(
-                    "play",
-                    () => this.connectAnalyser(),
-                    { once: true }
-                );
-            }
+            console.log("HTMLAUDIOELEMENT audioElement", audioElement);
+            this._audioElement.addEventListener(
+                "play",
+                () => this.connectAnalyser(),
+                { once: true }
+            );
+            
         } else if (audioElement instanceof AnalyserNode) {
+            console.log("ANALYSERNODE audioElement", audioElement);
             this._audioAnalyser = audioElement;
             this._audioContext = null;
             this._audioSource = null;
             this._play();
         } else if (audioElement) {
+            console.log("AUDIOCONTEXT audioElement", audioElement);
             this._audioContext = audioElement.context;
             this._audioSource = audioElement.source;
             this._audioAnalyser = this._audioContext.createAnalyser();
